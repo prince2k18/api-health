@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>API Monitor Dashboard</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-        .ok { color: green; }
-        .fail { color: red; }
-    </style>
+    <title>Health Form</title>
 </head>
 <body>
-    <h1>API Health Monitor</h1>
-
-    <form method="post" action="/add">
-        <input type="text" name="url" placeholder="Enter API URL" size="50" required>
-        <button type="submit">Add</button>
+    <h2>Submit Your Details</h2>
+    <form action="/add" method="post">
+        <label>Name:</label><br>
+        <input type="text" name="name"><br>
+        <label>Email:</label><br>
+        <input type="email" name="email"><br>
+        <label>Message:</label><br>
+        <textarea name="message"></textarea><br><br>
+        <input type="submit" value="Submit">
     </form>
 
-    <table>
-        <tr>
-            <th>API URL</th>
-            <th>Status</th>
-            <th>Latency (ms)</th>
-        </tr>
-        {% for r in results %}
-        <tr>
-            <td>{{ r.url }}</td>
-            <td class="{{ 'ok' if r.status == 200 else 'fail' }}">{{ r.status }}</td>
-            <td>{{ r.latency }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    {% if msg %}
+        <p style="color: green;">{{ msg }}</p>
+    {% endif %}
+
+    {% if data %}
+        <h3>Submitted Entries:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for name, email, message in data %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ email }}</td>
+                    <td>{{ message }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 </body>
 </html>
